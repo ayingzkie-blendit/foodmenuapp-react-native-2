@@ -1,10 +1,27 @@
 import React from 'react';
 import {StyleSheet, View, TextInput} from 'react-native';
-import {Button, Card, CardHeader, Text} from '@ui-kitten/components';
+import {
+  Button,
+  Card,
+  CardHeader,
+  ViewPager,
+  Input,
+} from '@ui-kitten/components';
 import {AuthContext} from '../context/auth-context';
 
 function Header(props) {
-  return <CardHeader title="Login" />;
+  return (
+    <CardHeader
+      title="Login"
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        lineHeight: 13,
+      }}
+    />
+  );
 }
 function Footer(props) {
   const {signIn} = React.useContext(AuthContext);
@@ -33,12 +50,12 @@ export function LoginPageScreen(props) {
       header={Header}
       footer={() => <Footer username={username} password={password} />}>
       <View>
-        <TextInput
+        <Input
           placeholder="Username"
           value={username}
           onChangeText={setUsername}
         />
-        <TextInput
+        <Input
           placeholder="Password"
           value={password}
           onChangeText={setPassword}
@@ -53,8 +70,10 @@ const styles = StyleSheet.create({
   footerContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    padding: 10,
   },
   footerControl: {
     marginHorizontal: 4,
+    padding: 5,
   },
 });
