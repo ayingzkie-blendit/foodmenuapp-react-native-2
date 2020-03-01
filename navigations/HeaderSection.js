@@ -2,7 +2,12 @@ import React, {useState, useContext} from 'react';
 import {ThemeContext} from '../context/theme-context';
 import {dark, light} from '@eva-design/eva';
 
-import {Icon, TopNavigation, TopNavigationAction} from '@ui-kitten/components';
+import {
+  Icon,
+  TopNavigation,
+  TopNavigationAction,
+  Toggle,
+} from '@ui-kitten/components';
 
 const BackIcon = style => <Icon {...style} name="arrow-back" />;
 
@@ -38,7 +43,12 @@ export function HeaderSection(props) {
     <MenuAction onPress={toggleDrawer} />,
     <ThemeContext.Consumer>
       {({theme, toggleTheme}) => (
-        <DarkAction onPress={toggleTheme} theme={theme} />
+        // <DarkAction onPress={toggleTheme} theme={theme} />
+        <Toggle
+          text={'Dark Mode'}
+          checked={theme === dark}
+          onChange={toggleTheme}
+        />
       )}
     </ThemeContext.Consumer>,
   ];
