@@ -1,13 +1,15 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {ThemeContext} from '../context/theme-context';
+import {AuthContext} from '../context/auth-context';
 import {dark, light} from '@eva-design/eva';
 
 import {
   Icon,
   TopNavigation,
   TopNavigationAction,
-  Toggle,
+  Button,
 } from '@ui-kitten/components';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const BackIcon = style => <Icon {...style} name="arrow-back" />;
 
@@ -30,27 +32,32 @@ const DarkAction = props => (
 );
 
 export function HeaderSection(props) {
+  const [token, setToken] = useState(null);
   const {route, navigation} = props;
   const onBackPress = () => {};
   const toggleDrawer = () => {
     navigation.toggleDrawer();
   };
 
-  const renderLeftControl = () => <BackAction onPress={onBackPress} />;
+  console.log(props, 'route');
+
+  const renderLeftControl = () =>
+    props.userToken ? <BackAction onPress={onBackPress} /> : <></>;
 
   const renderRightControls = () => [
-    <EditAction />,
-    <MenuAction onPress={toggleDrawer} />,
     <ThemeContext.Consumer>
       {({theme, toggleTheme}) => (
         // <DarkAction onPress={toggleTheme} theme={theme} />
-        <Toggle
-          text={'Dark Mode'}
-          checked={theme === dark}
-          onChange={toggleTheme}
-        />
+        <Button
+          icon={theme === dark?DarkIcon: DarkIconOutline}
+          onPress={toggleTheme}
+          size={'small'}
+          style={{borderRadius: 25}}>
+          Dark mode
+        </Button>
       )}
     </ThemeContext.Consumer>,
+    props.userToken ? <MenuAction onPress={toggleDrawer} /> : <></>,
   ];
 
   return (

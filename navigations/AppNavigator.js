@@ -9,11 +9,13 @@ import {
   Text,
   Icon,
   DrawerHeaderFooter,
+  useTheme,
 } from '@ui-kitten/components';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {LoginPageScreen} from '../pages/LoginPageScreen';
-const Drawer = createDrawerNavigator();
+
 import {AuthContext} from '../context/auth-context';
+import {RegistrationPageScreen} from '../pages/RegistrationPageScreen';
 
 function DrawerContent({navigation, state}) {
   const {signOut} = React.useContext(AuthContext);
@@ -75,6 +77,7 @@ function DrawerContent({navigation, state}) {
 }
 
 export function AppNavigator() {
+  const theme = useTheme();
   const [reducer, dispatch] = useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -149,31 +152,62 @@ export function AppNavigator() {
     [],
   );
 
+  const Drawer = createDrawerNavigator();
+
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         <Drawer.Navigator
           initialRouteName="Home"
           drawerStyle={{
-            paddingTop: getStatusBarHeight(true),
+            marginTop: getStatusBarHeight(),
           }}
           drawerContent={props => <DrawerContent {...props} />}>
           {reducer.userToken == null ? (
-            <Drawer.Screen
-              name="Login"
-              component={LoginPageScreen}
-              options={{
-                title: 'Sign in',
-                // When logging out, a pop animation feels intuitive
-                // You can remove this if you want the default 'push' animation
-                animationTypeForReplace: reducer.isSignout ? 'pop' : 'push',
-              }}
-            />
+            <>
+              <Drawer.Screen
+                name="Login"
+                options={{
+                  title: 'Sign in',
+                  // When logging out, a pop animation feels intuitive
+                  // You can remove this if you want the default 'push' animation
+                  animationTypeForReplace: reducer.isSignout ? 'pop' : 'push',
+                  gestureEnabled: false,
+                }}>
+                {props => <LoginPageScreen {...props} {...reducer} />}
+              </Drawer.Screen>
+              <Drawer.Screen
+                name={'Registration'}
+                options={{
+                  animationTypeForReplace: 'pop',
+                  gestureEnabled: false,
+                }}>
+                {props => <RegistrationPageScreen {...props} {...reducer} />}
+              </Drawer.Screen>
+            </>
           ) : (
             <>
-              <Drawer.Screen name="Home" component={HomeScreen} />
-              <Drawer.Screen name="Menus" component={HomeScreen} />
-              <Drawer.Screen name="Settings" component={HomeScreen} />
+              <Drawer.Screen
+                name="Home"
+                options={{
+                  animationTypeForReplace: 'pop',
+                }}>
+                {props => <HomeScreen {...props} {...reducer} />}
+              </Drawer.Screen>
+              <Drawer.Screen
+                name="Menus"
+                options={{
+                  animationTypeForReplace: 'pop',
+                }}>
+                {props => <HomeScreen {...props} {...reducer} />}
+              </Drawer.Screen>
+              <Drawer.Screen
+                name="Settings"
+                options={{
+                  animationTypeForReplace: 'pop',
+                }}>
+                {props => <HomeScreen {...props} {...reducer} />}
+              </Drawer.Screen>
             </>
           )}
         </Drawer.Navigator>

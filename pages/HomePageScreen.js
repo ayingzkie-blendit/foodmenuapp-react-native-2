@@ -1,20 +1,29 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {StyleSheet} from 'react-native';
+import {Layout, Text, useTheme} from '@ui-kitten/components';
 import {HeaderSection} from '../navigations/HeaderSection';
-import {Divider, Layout, Text, ViewPager} from '@ui-kitten/components';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {AuthContext} from '../context/auth-context';
 
 function HomePage(props) {
   return (
-    <SafeAreaView style={{alignItems: 'center', justifyContent: 'center'}}>
-      <HeaderSection {...props} />
-      <Divider />
-      <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ViewPager>
-          <Text category="h1">Details</Text>
-        </ViewPager>
-      </Layout>
-    </SafeAreaView>
+    <Layout style={styles.container}>
+      <SafeAreaView>
+          <HeaderSection {...props} />
+
+        <Text style={styles.text}>Welcome To React Native UI Kitten!</Text>
+      </SafeAreaView>
+    </Layout>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 2,
+  },
+  text: {
+    paddingHorizontal: 16,
+  },
+});
 
 export default HomePage;
